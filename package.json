@@ -1,0 +1,47 @@
+{
+    "name": "mcp-octane-server",
+    "version": "1.0.0",
+    "description": "An MCP Server for OpenText ALM Octane",
+    "type": "module",
+    "author": "Your Name <you@example.com>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/prakashbsamanta/mcp-octane-server.git"
+    },
+    "keywords": [
+        "mcp",
+        "octane",
+        "alm",
+        "opentext",
+        "ai",
+        "claude"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "bin": {
+        "mcp-octane": "./dist/index.js"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build": "tsup src/index.ts --format esm --dts --clean",
+        "start": "node dist/index.js",
+        "dev": "tsx src/index.ts"
+    },
+    "dependencies": {
+        "@microfocus/alm-octane-js-rest-sdk": "github:MicroFocus/alm-octane-js-rest-sdk",
+        "@modelcontextprotocol/sdk": "^1.0.1",
+        "axios": "^1.7.9",
+        "dotenv": "^16.4.5",
+        "zod": "^3.23.4"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "tsup": "^8.0.2",
+        "tsx": "^4.7.1",
+        "typescript": "^5.4.5"
+    }
+}
