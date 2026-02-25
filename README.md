@@ -4,7 +4,8 @@ A Model Context Protocol (MCP) server for OpenText ALM Octane. This server enabl
 
 ## 🚀 Quick Start (NPX)
 
-You can run this MCP server directly via `npx` without needing to clone the repository.
+This package is published on the public NPM registry. The easiest way to run this MCP server is directly via `npx` (which will download and execute the latest version on the fly), without needing to clone the repository or install anything globally.
+
 Simply provide your ALM Octane credentials as environment variables:
 
 ```bash
@@ -76,39 +77,18 @@ Create or append to the `.vscode/settings.json` file in your workspace:
 }
 ```
 
+*Note: Using `npx -y mcp-octane-server` in your IDE configuration is recommended as it ensures your client always fetches the latest version of the server from NPM upon startup. If you prefer to install it globally (`npm i -g mcp-octane-server`), you can replace the command array with simply `mcp-octane`.*
 ---
 
-## � NPM Publishing and Usage
+## 📦 Global Installation
 
-This project is configured to be seamlessly packaged and published to the NPM registry. Publishing the package makes it universally accessible and installable via `npm` or runnable anywhere directly via `npx` (as shown in the Quick Start).
-
-### 1. Publishing to NPM
-
-If you are an administrator and want to publish your own custom version of this package to NPM:
-
-1. **Login to NPM** (You only need to do this once):
-   ```bash
-   npm login
-   ```
-2. **Build the latest definitions**: Ensure the project compiles down to the `dist` folder:
-   ```bash
-   npm run build
-   ```
-3. **Publish**: 
-   ```bash
-   npm publish
-   ```
-   *(Ensure your `version` in `package.json` is incrementally updated before subsequent publishes).*
-
-### 2. Global Installation via NPM
-
-Once published (or when grabbing it from a public registry), users can install it globally on their system:
+If you intend to run the server frequently from your terminal outside of an IDE, you can install it globally on your system:
 
 ```bash
 npm install -g mcp-octane-server
 ```
 
-After global installation, you can run the server directly from anywhere using the executable name mapped in the package `bin`:
+After global installation, you can run the server using the compiled executable name directly from anywhere:
 
 ```bash
 mcp-octane \

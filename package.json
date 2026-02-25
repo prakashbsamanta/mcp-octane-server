@@ -1,6 +1,6 @@
 {
     "name": "mcp-octane-server",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "An MCP Server for OpenText ALM Octane",
     "type": "module",
     "author": "Your Name <you@example.com>",
@@ -21,7 +21,7 @@
         "access": "public"
     },
     "bin": {
-        "mcp-octane": "./dist/index.js"
+        "mcp-octane": "dist/index.js"
     },
     "files": [
         "dist"
