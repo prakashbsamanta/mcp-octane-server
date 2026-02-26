@@ -58,6 +58,19 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                 },
             },
             {
+                name: "update_defect",
+                description: "Update the status or severity of an existing defect.",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        defect_id: { type: ["string", "number"], description: "ID of the defect" },
+                        phase: { type: "string", description: "Target phase literal (optional)" },
+                        severity: { type: "string", description: "Target severity literal (optional)" },
+                    },
+                    required: ["defect_id"],
+                },
+            },
+            {
                 name: "create_defect",
                 description: "Create a new defect.",
                 inputSchema: {
@@ -81,6 +94,30 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                         phase: { type: "string", description: "Target phase literal (e.g. 'phase.story.done')" },
                     },
                     required: ["story_id", "phase"],
+                },
+            },
+            {
+                name: "search_stories",
+                description: "Search for user stories using basic text query or Octane query syntax.",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        query: { type: "string", description: "Search term" },
+                        limit: { type: "number", description: "Limit number of results" },
+                    },
+                    required: ["query"],
+                },
+            },
+            {
+                name: "create_story",
+                description: "Create a new user story.",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        name: { type: "string", description: "User Story Name/Summary" },
+                        description: { type: "string", description: "Detailed description" },
+                    },
+                    required: ["name", "description"],
                 },
             },
             {
@@ -131,10 +168,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name } = request.params;
 
     try {
-        if (["search_defects", "get_defect_details", "create_defect"].includes(name)) {
+        if (["search_defects", "get_defect_details", "create_defect", "update_defect"].includes(name)) {
             return await handleDefectsTools(request);
         }
-        if (name === "update_story_status") {
+        if (["update_story_status", "search_stories", "create_story"].includes(name)) {
             return await handleStoriesTools(request);
         }
         if (name === "get_my_work") {

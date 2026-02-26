@@ -120,7 +120,7 @@ docker run -i --rm \
 
 ## 🧠 Available Tools & Prompts
 
-* **Tools:** `search_defects`, `get_defect_details`, `create_defect`, `update_story_status`, `get_my_work`.
+* **Tools:** `search_defects`, `get_defect_details`, `create_defect`, `update_defect`, `search_stories`, `create_story`, `update_story_status`, `get_my_work`.
 * **Prompts:** `triage_assistance` (Analyzes defect data using the LLM and suggests 3 root causes from provided context).
 
 ---

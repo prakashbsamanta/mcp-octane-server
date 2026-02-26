@@ -1,6 +1,6 @@
 import { CallToolRequest } from "@modelcontextprotocol/sdk/types.js";
 import { octaneClient } from "../octane";
-import { SearchDefectsSchema, GetDefectDetailsSchema, CreateDefectSchema } from "../schemas";
+import { SearchDefectsSchema, GetDefectDetailsSchema, CreateDefectSchema, UpdateDefectSchema } from "../schemas";
 
 /**
  * Handle execution of defect-related tools.
@@ -54,6 +54,23 @@ export async function handleDefectsTools(request: CallToolRequest) {
 
             const result = await octaneClient
                 .create("defects", playload)
+                .execute();
+            return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+        }
+
+        case "update_defect": {
+            const { defect_id, phase, severity } = UpdateDefectSchema.parse(args);
+
+            const payload: any = {};
+            if (phase) payload.phase = { type: "phase", id: phase };
+            if (severity) payload.severity = { type: "list_node", id: severity };
+
+            if (Object.keys(payload).length === 0) {
+                return { content: [{ type: "text", text: "No fields provided to update." }] };
+            }
+
+            const result = await octaneClient
+                .update("defects", { id: Number(defect_id), ...payload })
                 .execute();
             return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
         }

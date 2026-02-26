@@ -16,9 +16,25 @@ export const CreateDefectSchema = z.object({
     priority: z.string().optional().describe("Priority ID or string"),
 });
 
+export const UpdateDefectSchema = z.object({
+    defect_id: z.union([z.string(), z.number()]).describe("ID of the defect to update"),
+    phase: z.string().optional().describe("Target phase literal, e.g., 'phase.defect.fixed'"),
+    severity: z.string().optional().describe("Severity ID or string"),
+});
+
 export const UpdateStoryStatusSchema = z.object({
     story_id: z.union([z.string(), z.number()]).describe("ID of the user story"),
     phase: z.string().describe("Target phase literal, e.g., 'In Progress', 'Done'"),
+});
+
+export const SearchStoriesSchema = z.object({
+    query: z.string().describe("Query string to search for user stories. Use Octane query syntax or basic text."),
+    limit: z.number().optional().describe("Maximum number of stories to return"),
+});
+
+export const CreateStorySchema = z.object({
+    name: z.string().describe("Name/Summary of the new user story"),
+    description: z.string().describe("Detailed description of the user story"),
 });
 
 export const GetMyWorkSchema = z.object({
