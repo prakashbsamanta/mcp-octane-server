@@ -1,8 +1,22 @@
 import { z } from "zod";
 
-export const SearchDefectsSchema = z.object({
-    query: z.string().describe("Query string to search for defects. Use Octane query syntax or basic text."),
-    limit: z.number().optional().describe("Maximum number of defects to return"),
+export const SearchAllSchema = z.object({
+    query: z.string().describe("Query string to search across the workspace (e.g. Work Items). Using BK allows finding substrings."),
+    limit: z.number().optional().describe("Maximum number of results to return"),
+});
+
+export const GetManualTestSchema = z.object({
+    test_id: z.union([z.string(), z.number()]).describe("ID of the manual test (MT) to fetch details (script/steps) for"),
+});
+
+export const GetSuiteRunsSchema = z.object({
+    suite_id: z.union([z.string(), z.number()]).describe("ID of the test suite (RC Suite) to fetch its past runs for"),
+    limit: z.number().optional()
+});
+
+export const GetRunHistorySchema = z.object({
+    suite_run_id: z.union([z.string(), z.number()]).optional().describe("ID of the suite_run to fetch the children runs' results (pass/fail status)."),
+    limit: z.number().optional()
 });
 
 export const GetDefectDetailsSchema = z.object({
@@ -27,10 +41,7 @@ export const UpdateStoryStatusSchema = z.object({
     phase: z.string().describe("Target phase literal, e.g., 'In Progress', 'Done'"),
 });
 
-export const SearchStoriesSchema = z.object({
-    query: z.string().describe("Query string to search for user stories. Use Octane query syntax or basic text."),
-    limit: z.number().optional().describe("Maximum number of stories to return"),
-});
+
 
 export const CreateStorySchema = z.object({
     name: z.string().describe("Name/Summary of the new user story"),

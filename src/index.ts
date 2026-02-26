@@ -12,6 +12,7 @@ import { octaneClient } from "./octane";
 import { handleDefectsTools } from "./tools/defects";
 import { handleStoriesTools } from "./tools/stories";
 import { handleMyWorkTools } from "./tools/my_work";
+import { handleQualityTools } from "./tools/quality";
 import { getTriageAssistancePrompt } from "./prompts/triage_assistance";
 
 const server = new Server(
@@ -35,15 +36,49 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
         tools: [
             {
-                name: "search_defects",
-                description: "Search for defects using basic text query or Octane query syntax.",
+                name: "search_all",
+                description: "Unified search across the workspace (Defects, Stories, Tests, etc) using ID or keyword.",
                 inputSchema: {
                     type: "object",
                     properties: {
-                        query: { type: "string", description: "Search term" },
+                        query: { type: "string", description: "Search term or ID" },
                         limit: { type: "number", description: "Limit number of results" },
                     },
                     required: ["query"],
+                },
+            },
+            {
+                name: "get_manual_test",
+                description: "Fetch details of a manual test, including its script (steps), validation points, and phase.",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        test_id: { type: ["string", "number"], description: "ID of the Manual Test" },
+                    },
+                    required: ["test_id"],
+                },
+            },
+            {
+                name: "get_suite_runs",
+                description: "Fetch execution runs of a specific test suite (RC Suite).",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        suite_id: { type: ["string", "number"], description: "ID of the Test Suite" },
+                        limit: { type: "number", description: "Limit number of results" },
+                    },
+                    required: ["suite_id"],
+                },
+            },
+            {
+                name: "get_run_history",
+                description: "Fetch detailed run results (pass/fail status) for tests within a suite run.",
+                inputSchema: {
+                    type: "object",
+                    properties: {
+                        suite_run_id: { type: ["string", "number"], description: "ID of the Suite Run to fetch children runs for" },
+                        limit: { type: "number", description: "Limit number of results" },
+                    },
                 },
             },
             {
@@ -96,18 +131,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
                     required: ["story_id", "phase"],
                 },
             },
-            {
-                name: "search_stories",
-                description: "Search for user stories using basic text query or Octane query syntax.",
-                inputSchema: {
-                    type: "object",
-                    properties: {
-                        query: { type: "string", description: "Search term" },
-                        limit: { type: "number", description: "Limit number of results" },
-                    },
-                    required: ["query"],
-                },
-            },
+
             {
                 name: "create_story",
                 description: "Create a new user story.",
@@ -168,11 +192,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     const { name } = request.params;
 
     try {
-        if (["search_defects", "get_defect_details", "create_defect", "update_defect"].includes(name)) {
+        if (["get_defect_details", "create_defect", "update_defect"].includes(name)) {
             return await handleDefectsTools(request);
         }
-        if (["update_story_status", "search_stories", "create_story"].includes(name)) {
+        if (["update_story_status", "create_story"].includes(name)) {
             return await handleStoriesTools(request);
+        }
+        if (["search_all", "get_manual_test", "get_suite_runs", "get_run_history"].includes(name)) {
+            return await handleQualityTools(request);
         }
         if (name === "get_my_work") {
             return await handleMyWorkTools(request);

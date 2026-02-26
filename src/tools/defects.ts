@@ -1,6 +1,6 @@
 import { CallToolRequest } from "@modelcontextprotocol/sdk/types.js";
 import { octaneClient } from "../octane";
-import { SearchDefectsSchema, GetDefectDetailsSchema, CreateDefectSchema, UpdateDefectSchema } from "../schemas";
+import { GetDefectDetailsSchema, CreateDefectSchema, UpdateDefectSchema } from "../schemas";
 
 /**
  * Handle execution of defect-related tools.
@@ -9,23 +9,6 @@ export async function handleDefectsTools(request: CallToolRequest) {
     const { name, arguments: args } = request.params;
 
     switch (name) {
-        case "search_defects": {
-            const { query, limit = 50 } = SearchDefectsSchema.parse(args);
-
-            // Formatting the Octane query syntax for "name" and "description"
-            const octaneQuery = `"*"*${query}*"*"`;
-            // Basic text search or standard query logic fallback
-            const queryParam = query.includes("=") ? query : `(name="*${query}*"||description="*${query}*")`;
-
-            const result = await octaneClient
-                .get("defects")
-                .query(queryParam)
-                .limit(limit)
-                .fields("id", "name", "severity", "phase", "owner")
-                .execute();
-            return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
-        }
-
         case "get_defect_details": {
             const { defect_id } = GetDefectDetailsSchema.parse(args);
             const result = await octaneClient
