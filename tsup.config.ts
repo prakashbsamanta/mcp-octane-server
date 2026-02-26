@@ -6,6 +6,7 @@ export default defineConfig({
     dts: true,
     clean: true,
     platform: 'node',
-    noExternal: ['@microfocus/alm-octane-js-rest-sdk', 'axios', 'dotenv', 'zod', '@modelcontextprotocol/sdk'],
+    minify: true,
+    noExternal: ['@microfocus/alm-octane-js-rest-sdk'],
     shims: true
 });

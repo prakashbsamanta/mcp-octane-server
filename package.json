@@ -1,6 +1,6 @@
 {
     "name": "mcp-octane-server",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "An MCP Server for OpenText ALM Octane",
     "type": "module",
     "author": "Your Name <you@example.com>",
